@@ -112,6 +112,92 @@ header {
     object-fit: cover;
 }
 
+.inner-left-bottom {
+    position: absolute;
+    bottom: 20%;
+    left: 8%;
+    max-width: 600px;
+    z-index: 2;
+    animation: fadeInLeft 1s ease-out;
+}
+
+.inner-left-bottom-content {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    padding: 40px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.inner-left-bottom-content h1 {
+    font-family: 'D-DIN-Bold', Arial, sans-serif;
+    font-size: 48px;
+    line-height: normal;
+    margin-bottom: 20px;
+    background: linear-gradient(120deg, #ffffff, #a7a7a7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.inner-left-bottom-content p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #e0e0e0;
+    margin-bottom: 30px;
+}
+
+.btn-animate {
+    display: inline-block;
+    padding: 12px 32px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-animate:hover {
+    background: white;
+    color: black;
+    transform: translateY(-2px);
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .inner-left-bottom {
+        left: 5%;
+        right: 5%;
+        bottom: 15%;
+        max-width: 90%;
+    }
+    
+    .inner-left-bottom-content {
+        padding: 25px;
+    }
+    
+    .inner-left-bottom-content h1 {
+        font-size: 36px;
+    }
+    
+    .inner-left-bottom-content p {
+        font-size: 16px;
+    }
+}
+
 /* Information Section */
 .information {
     margin-top: 100vh;
@@ -146,6 +232,7 @@ header {
 
 .information h1 {
     font-size: 48px;
+    line-height: normal;
     margin-bottom: 30px;
     letter-spacing: -1px;
     background: linear-gradient(120deg, #ffffff, #a7a7a7);
@@ -441,6 +528,7 @@ header {
 
 .about-content h1 {
     font-size: 70px;
+    line-height: normal;
     margin-bottom: 40px;
     padding-bottom: 90px;
     text-align: center;
@@ -562,6 +650,7 @@ header {
 
 .container-info h1 {
     font-size: 48px;
+    line-height: normal;
     margin-bottom: 30px;
     text-align: center;
     padding-bottom: 50px;

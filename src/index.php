@@ -66,6 +66,14 @@
         </video>
     </section>
 
+    <div class="inner-left-bottom">
+        <div class="inner-left-bottom-content">
+            <h1>SpaceX</h1>
+            <p>SpaceX designs, manufactures, and launches advanced rockets and spacecraft. The company was founded in 2002 to revolutionize space technology, with the ultimate goal of enabling people to live on other planets.</p>
+            <a class="btn-animate">Explore Now!</a>
+        </div>
+    </div>
+
     <section class="information">
         <div class="container-info">
             <h1>Falcon 9</h1>
