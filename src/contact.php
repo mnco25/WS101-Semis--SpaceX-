@@ -2,23 +2,40 @@
 $message = '';
 $error = '';
 
+// Database connection parameters
+$host = 'localhost';
+$db   = 'spacex_contacts';
+$user = 'root';
+$pass = '';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate inputs
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $msg = trim($_POST['message'] ?? '');
-    
+
     if (empty($name) || empty($email) || empty($msg)) {
         $error = "Please fill in all fields.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Please enter a valid email address.";
     } else {
-        // Here you would typically send an email
-        // For demo, just show success message
-        $message = "Thank you for your message, $name! We'll get back to you soon.";
-        
-        // Clear form
-        $name = $email = $msg = '';
+        try {
+            // Create a new PDO instance
+            $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+            $pdo = new PDO($dsn, $user, $pass);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Prepare an insert statement
+            $stmt = $pdo->prepare("INSERT INTO messages (name, email, message) VALUES (?, ?, ?)");
+            $stmt->execute([$name, $email, $msg]);
+
+            $message = "Thank you for your message, $name! We'll get back to you soon.";
+
+            // Clear form data
+            $name = $email = $msg = '';
+        } catch (PDOException $e) {
+            $error = "Database error: " . $e->getMessage();
+        }
     }
 }
 ?>
