@@ -1,7 +1,6 @@
 <?php
 session_start();
-function getEmailByUsername($username)
-{
+function getEmailByUsername($username) {
     $host = 'localhost';
     $dbname = 'spacex_contacts';
     $dbuser = 'root';
@@ -13,10 +12,10 @@ function getEmailByUsername($username)
 
         $stmt = $pdo->prepare("SELECT email FROM users WHERE username = ?");
         $stmt->execute([$username]);
-
+        
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? $result['email'] : '';
-    } catch (PDOException $e) {
+    } catch(PDOException $e) {
         error_log("Database Error: " . $e->getMessage());
         return '';
     }
@@ -110,40 +109,39 @@ $username = $_SESSION['username'] ?? 'Guest';
                 </div>
             </div>
 
-        <h2>Missions</h2>
-        <ul class="tech-list">
-            <li>
-                <strong>Falcon 9:</strong>
-                A reusable rocket designed to transport satellites and the Dragon spacecraft into orbit.
-            </li>
-            <li>
-                <strong>Starship:</strong>
-                A fully reusable spacecraft designed for missions to Mars and beyond.
-            </li>
-            <li>
-                <strong>Starlink:</strong>
-                A satellite constellation project aimed at providing global broadband internet service.
-            </li>
-        </ul>
+            <h2>Missions</h2>
+            <ul class="tech-list">
+                <li>
+                    <strong>Falcon 9:</strong>
+                    A reusable rocket designed to transport satellites and the Dragon spacecraft into orbit.
+                </li>
+                <li>
+                    <strong>Starship:</strong>
+                    A fully reusable spacecraft designed for missions to Mars and beyond.
+                </li>
+                <li>
+                    <strong>Starlink:</strong>
+                    A satellite constellation project aimed at providing global broadband internet service.
+                </li>
+            </ul>
 
-        <h2>Latest News</h2>
-        <p>Stay tuned for the latest updates on our missions and projects.</p>
-        <div class="stats">
-            <div class="stat-item">
-                <h3>Upcoming Launch</h3>
-                <p>Mission to Mars</p>
+            <h2>Latest News</h2>
+            <p>Stay tuned for the latest updates on our missions and projects.</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <h3>Upcoming Launch</h3>
+                    <p>Mission to Mars</p>
+                </div>
+                <div class="stat-item">
+                    <h3>New Technology</h3>
+                    <p>Raptor Engines</p>
+                </div>
+                <div class="stat-item">
+                    <h3>Recent Achievement</h3>
+                    <p>First Civilian Crew</p>
+                </div>
             </div>
-            <div class="stat-item">
-                <h3>New Technology</h3>
-                <p>Raptor Engines</p>
-            </div>
-            <div class="stat-item">
-                <h3>Recent Achievement</h3>
-                <p>First Civilian Crew</p>
-            </div>
-        </div>
         </div>
     </section>
 </body>
-
 </html>
