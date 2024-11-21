@@ -1,6 +1,7 @@
 <?php
 session_start();
-function getEmailByUsername($username) {
+function getEmailByUsername($username)
+{
     $host = 'localhost';
     $dbname = 'spacex_contacts';
     $dbuser = 'root';
@@ -12,10 +13,10 @@ function getEmailByUsername($username) {
 
         $stmt = $pdo->prepare("SELECT email FROM users WHERE username = ?");
         $stmt->execute([$username]);
-        
+
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? $result['email'] : '';
-    } catch(PDOException $e) {
+    } catch (PDOException $e) {
         error_log("Database Error: " . $e->getMessage());
         return '';
     }
@@ -143,5 +144,11 @@ $username = $_SESSION['username'] ?? 'Guest';
             </div>
         </div>
     </section>
+    <footer class="footer">
+        <div class="container-footer">
+            <p>SpaceX © 2024 <a href="privacy-policy.php">PRIVACY POLICY</a><a href="suppliers.php">SUPPLIERS</a></p>
+        </div>
+    </footer>
 </body>
+
 </html>

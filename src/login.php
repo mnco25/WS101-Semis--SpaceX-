@@ -2,7 +2,7 @@
 session_start();
 $message = '';
 
-// Database connection parameters
+
 $host = 'localhost';
 $db   = 'spacex_contacts';
 $user = 'root';

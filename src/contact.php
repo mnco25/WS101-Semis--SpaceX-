@@ -2,14 +2,14 @@
 $message = '';
 $error = '';
 
-// Database connection parameters
+
 $host = 'localhost';
 $db   = 'spacex_contacts';
 $user = 'root';
 $pass = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate inputs
+
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $msg = trim($_POST['message'] ?? '');
@@ -20,18 +20,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Please enter a valid email address.";
     } else {
         try {
-            // Create a new PDO instance
+
             $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
             $pdo = new PDO($dsn, $user, $pass);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // Prepare an insert statement
+
             $stmt = $pdo->prepare("INSERT INTO messages (name, email, message) VALUES (?, ?, ?)");
             $stmt->execute([$name, $email, $msg]);
 
             $message = "Thank you for your message, $name! We'll get back to you soon.";
 
-            // Clear form data
+
             $name = $email = $msg = '';
         } catch (PDOException $e) {
             $error = "Database error: " . $e->getMessage();
@@ -42,6 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,8 +54,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/styles.css">
     <title>Contact SpaceX</title>
 </head>
+
 <body>
-<header>
+    <header>
         <nav>
             <div class="header-inner">
                 <div class="logo">
@@ -98,11 +100,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </nav>
     </header>
-    
+
     <section class="contact-section">
         <div class="container-info">
             <h1>Contact Us</h1>
-            
+
             <?php if ($message): ?>
                 <div class="success-message"><?php echo htmlspecialchars($message); ?></div>
             <?php endif; ?>
@@ -137,4 +139,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </footer>
 </body>
+
 </html>

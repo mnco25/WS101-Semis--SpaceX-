@@ -1,4 +1,3 @@
-/* Font Faces */
 @font-face {
     font-family: 'D-DIN';
     src: url('fonts/D-DIN.woff2') format('woff2');
@@ -13,7 +12,7 @@
     font-style: normal;
 }
 
-/* Base Styles */
+
 body {
     font-family: 'D-DIN', Arial, Verdana, sans-serif;
     font-size: 14px;
@@ -24,7 +23,7 @@ body {
     color: white;
 }
 
-/* Header & Navigation */
+
 header {
     position: sticky;
     top: 0;
@@ -95,7 +94,7 @@ header {
     text-decoration: none;
 }
 
-/* Hero Video Section */
+
 .hero-video {
     width: 100%;
     height: 100vh;
@@ -198,7 +197,7 @@ header {
     }
 }
 
-/* Information Section */
+
 .information {
     margin-top: 100vh;
     color: white;
@@ -267,7 +266,7 @@ header {
     color: #e0e0e0;
 }
 
-/* Stats Grid Enhancement */
+
 .stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -308,7 +307,7 @@ header {
     -webkit-text-fill-color: transparent;
 }
 
-/* Technical Specs List */
+
 .tech-list {
     text-align: left;
     max-width: 800px;
@@ -339,7 +338,7 @@ header {
     letter-spacing: 1px;
 }
 
-/* Technical Specifications Grid */
+
 .specs-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -381,7 +380,7 @@ header {
     -webkit-text-fill-color: transparent;
 }
 
-/* Timeline Grid */
+
 .timeline {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -421,7 +420,7 @@ header {
     margin: 0;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1024px) {
     .specs-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -440,7 +439,7 @@ header {
     }
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .stats {
         grid-template-columns: 1fr;
@@ -479,7 +478,7 @@ header {
     text-decoration: underline;
 }
 
-/* About Page Specific Styles */
+
 .about-content {
     padding: 120px 0;
     background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.95));
@@ -604,7 +603,7 @@ header {
 }
 
 .stat-item p {
-    font-size: 70px;  /* Much larger font */
+    font-size: 70px;  
     font-weight: bold;
     background: linear-gradient(120deg, #ffffff, #a7a7a7);
     -webkit-background-clip: text;
@@ -686,13 +685,13 @@ header {
 .submit-btn {
     background: #fff;
     color: #000;
-    padding: 0.75rem 1.5rem;  /* reduced padding */
+    padding: 0.75rem 1.5rem;  
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
-    width: auto;             /* changed from 100% to auto */
-    font-size: medium;        /* changed from medium to small */
+    width: auto;             
+    font-size: medium;        
 }
 .submit-btn:hover {
     background: #ddd;
@@ -718,7 +717,7 @@ header {
     text-align: center;
 }
 
-/* Welcome Section */
+
 .welcome-section {
     background: url('your_background_image.jpg') no-repeat center center fixed;
     background-size: cover;
@@ -750,7 +749,7 @@ header {
     color: #000000;
 }
 
-/* WebKit browsers (Chrome, Safari, Edge) */
+
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -768,7 +767,7 @@ header {
     background: rgba(255, 255, 255, 0.5);
 }
 
-/* Firefox */
+
 * {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
