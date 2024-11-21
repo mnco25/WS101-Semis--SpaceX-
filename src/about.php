@@ -122,7 +122,7 @@
             <div class="stats">
                 <div class="stat-item">
                     <h3>Launch Frequency</h3>
-                    <p>Every 6 Days</p>
+                    <p>Weekly</p>
                 </div>
                 <div class="stat-item">
                     <h3>Starlink Satellites</h3>
@@ -131,8 +131,8 @@
                 <div class="stat-item">
                     <h3>Success Rate</h3>
                     <p>98%</p>
-                </div>
-            </div>
+                </div
+            </divs>
         </div>
     </section>
 
