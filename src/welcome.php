@@ -1,47 +1,34 @@
 <?php
-$message = '';
-$error = '';
+session_start();
+function getEmailByUsername($username)
+{
+    $host = 'localhost';
+    $dbname = 'spacex_contacts';
+    $dbuser = 'root';
+    $dbpass = '';
 
-// Database connection parameters
-$host = 'localhost';
-$db   = 'spacex_contacts';
-$user = 'root';
-$pass = '';
+    try {
+        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $dbpass);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate inputs
-    $name = trim($_POST['name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $msg = trim($_POST['message'] ?? '');
+        $stmt = $pdo->prepare("SELECT email FROM users WHERE username = ?");
+        $stmt->execute([$username]);
 
-    if (empty($name) || empty($email) || empty($msg)) {
-        $error = "Please fill in all fields.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Please enter a valid email address.";
-    } else {
-        try {
-            // Create a new PDO instance
-            $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
-            $pdo = new PDO($dsn, $user, $pass);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            // Prepare an insert statement
-            $stmt = $pdo->prepare("INSERT INTO messages (name, email, message) VALUES (?, ?, ?)");
-            $stmt->execute([$name, $email, $msg]);
-
-            $message = "Thank you for your message, $name! We'll get back to you soon.";
-
-            // Clear form data
-            $name = $email = $msg = '';
-        } catch (PDOException $e) {
-            $error = "Database error: " . $e->getMessage();
-        }
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['email'] : '';
+    } catch (PDOException $e) {
+        error_log("Database Error: " . $e->getMessage());
+        return '';
     }
 }
+
+$email = isset($_SESSION['username']) ? getEmailByUsername($_SESSION['username']) : '';
+$username = $_SESSION['username'] ?? 'Guest';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,10 +38,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/styles.css">
-    <title>Contact SpaceX</title>
+    <title>Welcome to SpaceX</title>
 </head>
+
 <body>
-<header>
+
+    <header>
         <nav>
             <div class="header-inner">
                 <div class="logo">
@@ -93,48 +82,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <li><a href="index.php">HOME</a></li>
                     <li><a href="about.php">ABOUT</a></li>
                     <li><a href="contact.php">CONTACT</a></li>
-                    <li><a href="login.php">LOGIN</a></li>
+                    <li><a href="login.php">LOGOUT</a></li>
                 </ul>
             </div>
         </nav>
     </header>
-    
-    <section class="contact-section">
+
+    <section class="welcome-section">
         <div class="container-info">
-            <h1>Contact Us</h1>
-            
-            <?php if ($message): ?>
-                <div class="success-message"><?php echo htmlspecialchars($message); ?></div>
-            <?php endif; ?>
+            <h1>Welcome, <?php echo htmlspecialchars($username); ?>!</h1>
+            <p>SpaceX is revolutionizing space technology, with the ultimate goal of enabling people to live on other planets.</p>
 
-            <?php if ($error): ?>
-                <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
-            <?php endif; ?>
-
-            <form method="POST" class="contact-form">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name ?? ''); ?>" required>
+            <div class="stats">
+                <div class="stat-item">
+                    <h3>Email</h3>
+                    <p>
+                        <?php echo htmlspecialchars($email); ?>
+                    </p>
                 </div>
-
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
+                <div class="stat-item">
+                    <h3>Member Since</h3>
+                    <p>2020</p>
                 </div>
-
-                <div class="form-group">
-                    <label for="message">Message:</label>
-                    <textarea id="message" name="message" rows="5" required><?php echo htmlspecialchars($msg ?? ''); ?></textarea>
+                <div class="stat-item">
+                    <h3>Subscription Plan</h3>
+                    <p>Premium+</p>
                 </div>
+            </div>
 
-                <button type="submit" class="submit-btn">Send Message</button>
-            </form>
+        <h2>Missions</h2>
+        <ul class="tech-list">
+            <li>
+                <strong>Falcon 9:</strong>
+                A reusable rocket designed to transport satellites and the Dragon spacecraft into orbit.
+            </li>
+            <li>
+                <strong>Starship:</strong>
+                A fully reusable spacecraft designed for missions to Mars and beyond.
+            </li>
+            <li>
+                <strong>Starlink:</strong>
+                A satellite constellation project aimed at providing global broadband internet service.
+            </li>
+        </ul>
+
+        <h2>Latest News</h2>
+        <p>Stay tuned for the latest updates on our missions and projects.</p>
+        <div class="stats">
+            <div class="stat-item">
+                <h3>Upcoming Launch</h3>
+                <p>Mission to Mars</p>
+            </div>
+            <div class="stat-item">
+                <h3>New Technology</h3>
+                <p>Raptor Engines</p>
+            </div>
+            <div class="stat-item">
+                <h3>Recent Achievement</h3>
+                <p>First Civilian Crew</p>
+            </div>
+        </div>
         </div>
     </section>
-    <footer class="footer">
-        <div class="container-footer">
-            <p>SpaceX © 2024 <a href="privacy-policy.php">PRIVACY POLICY</a><a href="suppliers.php">SUPPLIERS</a></p>
-        </div>
-    </footer>
 </body>
+
 </html>

@@ -1,6 +1,6 @@
 <?php
+session_start();
 $message = '';
-$error = '';
 
 // Database connection parameters
 $host = 'localhost';
@@ -8,40 +8,41 @@ $db   = 'spacex_contacts';
 $user = 'root';
 $pass = '';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate inputs
-    $name = trim($_POST['name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $msg = trim($_POST['message'] ?? '');
+try {
+    $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+    $pdo = new PDO($dsn, $user, $pass);
 
-    if (empty($name) || empty($email) || empty($msg)) {
-        $error = "Please fill in all fields.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Please enter a valid email address.";
-    } else {
-        try {
-            // Create a new PDO instance
-            $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
-            $pdo = new PDO($dsn, $user, $pass);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $username = trim($_POST['username'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $password = trim($_POST['password'] ?? '');
 
-            // Prepare an insert statement
-            $stmt = $pdo->prepare("INSERT INTO messages (name, email, message) VALUES (?, ?, ?)");
-            $stmt->execute([$name, $email, $msg]);
-
-            $message = "Thank you for your message, $name! We'll get back to you soon.";
-
-            // Clear form data
-            $name = $email = $msg = '';
-        } catch (PDOException $e) {
-            $error = "Database error: " . $e->getMessage();
+        if (empty($username) || empty($email) || empty($password)) {
+            $message = "Please fill in all fields.";
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $message = "Please enter a valid email address.";
+        } else {
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
+            $stmt->execute([$username, $email]);
+            if ($stmt->fetch()) {
+                $message = "Username or email already exists.";
+            } else {
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+                $stmt->execute([$username, $email, $hashedPassword]);
+                $_SESSION['username'] = $username;
+                header("Location: login.php");
+                exit();
+            }
         }
     }
+} catch (PDOException $e) {
+    $message = "Database error: " . $e->getMessage();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,10 +52,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="icon" href="public/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/styles.css">
-    <title>Contact SpaceX</title>
+    <title>Register SpaceX</title>
 </head>
+
 <body>
-<header>
+    <header>
         <nav>
             <div class="header-inner">
                 <div class="logo">
@@ -98,43 +100,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </nav>
     </header>
-    
-    <section class="contact-section">
-        <div class="container-info">
-            <h1>Contact Us</h1>
-            
-            <?php if ($message): ?>
-                <div class="success-message"><?php echo htmlspecialchars($message); ?></div>
-            <?php endif; ?>
-
-            <?php if ($error): ?>
-                <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
-            <?php endif; ?>
-
-            <form method="POST" class="contact-form">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name ?? ''); ?>" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="message">Message:</label>
-                    <textarea id="message" name="message" rows="5" required><?php echo htmlspecialchars($msg ?? ''); ?></textarea>
-                </div>
-
-                <button type="submit" class="submit-btn">Send Message</button>
-            </form>
-        </div>
-    </section>
-    <footer class="footer">
-        <div class="container-footer">
-            <p>SpaceX © 2024 <a href="privacy-policy.php">PRIVACY POLICY</a><a href="suppliers.php">SUPPLIERS</a></p>
-        </div>
-    </footer>
+    <div class="container-info">
+        <h1>Register</h1>
+        <?php if ($message): ?>
+            <div class="error-message"><?php echo htmlspecialchars($message); ?></div>
+        <?php endif; ?>
+        <form method="POST" class="contact-form">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($username ?? ''); ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="submit-btn">Register</button>
+        </form>
+    </div>
 </body>
+
 </html>
